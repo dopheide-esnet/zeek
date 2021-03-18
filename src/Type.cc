@@ -1015,6 +1015,17 @@ const char* RecordType::AddFields(const type_decl_list& others,
 
 	TableVal::SaveParseTimeTableState(this);
 
+	AddFieldsDirectly(others, add_log_attr);
+
+	RecordVal::ResizeParseTimeRecords(this);
+	TableVal::RebuildParseTimeTables();
+
+	return nullptr;
+	}
+
+void RecordType::AddFieldsDirectly(const type_decl_list& others,
+					bool add_log_attr)
+	{
 	for ( const auto& td : others )
 		{
 		if ( add_log_attr )
@@ -1029,9 +1040,6 @@ const char* RecordType::AddFields(const type_decl_list& others,
 		}
 
 	num_fields = types->length();
-	RecordVal::ResizeParseTimeRecords(this);
-	TableVal::RebuildParseTimeTables();
-	return nullptr;
 	}
 
 void RecordType::DescribeFields(ODesc* d) const
